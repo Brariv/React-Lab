@@ -1,0 +1,54 @@
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    background-color: dodgerblue;
+    padding: 10px;
+    gap: 10px;
+    width: 95%;
+    height: 50%;
+
+}
+
+.card {
+    background-color: transparent;
+    width: 20vw;
+    height: 20vh;
+    border-radius: 20px;
+    perspective: 1000px;
+}
+  
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .card:active .card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .card-front {
+    background-color: #bbb;
+    color: black;
+    border: 1px solid #000000;
+    border-radius: 20px;
+  }
+  
+  .card-back {
+    background-color: #2980b9;
+    color: white;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    transform: rotateY(180deg);
+  }
