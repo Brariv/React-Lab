@@ -6,7 +6,15 @@
     gap: 10px;
     width: 95%;
     height: 50%;
+}
 
+.start-container {
+    background-color: green;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .card {
@@ -51,5 +59,7 @@
     border-radius: 20px;
     transform: rotateY(180deg);
   }
+
+  
 
   
