@@ -26,7 +26,7 @@
     transform-style: preserve-3d;
   }
   
-  .card:active .card-inner {
+  .card.is-flipped .card-inner {
     transform: rotateY(180deg);
   }
   
@@ -46,9 +46,10 @@
   }
   
   .card-back {
-    background-color: #2980b9;
     color: white;
     border: 1px solid #000000;
     border-radius: 20px;
     transform: rotateY(180deg);
   }
+
+  

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Memoria</title>
+    
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <link rel="stylesheet" href="cards.css">
+
+    <div id="root">
+        <!-- React will render the app here -->
+    </div>
+
+    <script type="text/babel">
+        const { useState } = React;
+        import { useTimer } from 'react-timer-hook';
+
+
+        function App() {
+            
+
+            const [cards, setCards] = useState([
+                { id: 1, text: 'Card 1', flipped: false , color: '#2980b9', found: false},
+                { id: 2, text: 'Card 2', flipped: false , color: '#2980b9', found: false},
+                { id: 3, text: 'Card 1', flipped: false , color: '#2980b9', found: false},
+                { id: 4, text: 'Card 2', flipped: false , color: '#2980b9', found: false},
+            ]);
+
+            const [status, setStatus] = useState({
+                started: false, finished: false, time: 0, attempts: 0
+            });
+
+            const shuffleCards = () => {
+                const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
+                setCards(shuffledCards);
+            };
+
+            const flipCard = (id) => {
+                if (cards.find(card => card.id === id).found) {
+                    return;
+                }
+                setCards(cards.map(card => card.id === id ? { ...card, flipped: !card.flipped } : card));
+                verifyMatch();
+            };
+
+            const verifyMatch = () => {
+                const flippedCards = cards.filter(card => card.flipped && card.found === false);
+                if (flippedCards.length === 2) {
+                    if (flippedCards[0].text === flippedCards[1].text) {
+                        setCards(cards.map(card => (card.id === flippedCards[0].id || card.id === flippedCards[1].id ? { ...card, color: '#2ecc71', found: true } : card)));
+                    } else {
+                        alert('No match, try again!');
+                        setTimeout(() => {
+                            setCards(cards.map(card => (card.id === flippedCards[0].id || card.id === flippedCards[1].id ? { ...card, flipped: false, found: false } : card)));
+                        }, 2000);
+                        setStatus({ ...status, attempts: status.attempts + 1 });
+                    }
+                }
+                
+            };
+
+            const verifyWin = () => {
+                if (cards.every(card => card.found)) {
+                    alert('You win!');
+                }
+            };
+
+            return (
+                <div className="game">
+                    <h1>React Memory Game</h1>
+                    <button onClick={shuffleCards}>Shuffle Cards</button>
+                    <button onClick={verifyWin}>Check Win</button>
+                    <p>Attempts: {status.attempts}</p>
+                    <p>Time: {status.time}</p>
+                    <p>Game Status: {status.started ? (status.finished ? 'Finished' : 'In Progress') : 'Not Started'}</p>
+                    <button onClick={() => setStatus({ ...status, started: true })}>Start Game</button>
+                    <button onClick={() => setStatus({ ...status, finished: true })}>Finish Game</button>
+                
+                    <div className="container">
+                        {cards.map(card => (
+                            <div key={card.id} className={`card ${card.flipped ? 'is-flipped' : ''}`} onClick={() => flipCard(card.id)}>
+                                <div className="card-inner">
+                                    <div className="card-front">
+                                        <p>back</p>
+                                    </div>
+                                    <div className="card-back" style={{ backgroundColor: card.color }}>
+                                        <p>{card.text}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
